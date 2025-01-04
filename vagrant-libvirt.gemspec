@@ -25,9 +25,10 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rexml'
   s.add_runtime_dependency 'xml-simple'
   s.add_runtime_dependency 'diffy'
+  s.add_runtime_dependency 'erb'
 
   # Make sure to allow use of the same version as Vagrant by being less specific
-  s.add_runtime_dependency 'nokogiri', '~> 1.6'
+  s.add_runtime_dependency 'nokogiri', '~> 1.16'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency "rspec-core", ">= 3.5"

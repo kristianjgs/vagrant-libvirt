@@ -47,72 +47,27 @@ rubygems package [repository](https://github.com/vagrant-libvirt/vagrant-libvirt
 asserts. Unfortunately it's not yet possible to make the rubygem repositories in GitHub public.
 
 To install provide the file directly to the install command:
-```
-vagrant plugin install ./vagrant-libvirt-<version>.gem
-```
 
-It is possible to install directly from the GitHub rubygems package repository, however this will embedded
-your GitHub token directly into the file `~/.vagrant.d/plugins.json`:
-```
-vagrant plugin install vagrant-libvirt \
-  --plugin-source https://${USERNAME}:${GITHUB_TOKEN}@rubygems.pkg.github.com/vagrant-libvirt \
-  --plugin-version "0.10.9.pre.62"
-```
 
-Provided this token is a classic token limited to `read:packages` only, this may be acceptable to you.
-
-## Running
-
-Once installed, use vagrant-libvirt through vagrant.
-
-Locate a vagrant box containing the distribution you want to use at
-[Vagrant Cloud](https://app.vagrantup.com/boxes/search?provider=libvirt) and
-initialize.
-
-```shell
-vagrant init fedora/32-cloud-base
-```
-
-Then run following command:
-
-```shell
-vagrant up --provider=libvirt
-```
-
-Vagrant needs to know that we want to use Libvirt and not default VirtualBox.
-That's why there is `--provider=libvirt` option specified. Other way to tell
-Vagrant to use Libvirt provider is to setup environment variable
-
-```shell
-export VAGRANT_DEFAULT_PROVIDER=libvirt
-```
-
-Afterwards to enter the VM simply use:
-```shell
-vagrant ssh
-```
-
-If you can't find a box that works as you need, have a look at our documentation
-on [creating boxes](https://vagrant-libvirt.github.io/vagrant-libvirt/boxes.html#creating-boxes)
-on how to take existing ones, customize them and repackage.
-
-## Development
 
 To work on the `vagrant-libvirt` plugin, clone this repository out, and use
 [Bundler](http://gembundler.com) to get the dependencies:
 
 ```shell
-git clone https://github.com/vagrant-libvirt/vagrant-libvirt.git
+git clone https://github.com/kristianjgs/vagrant-libvirt.git
 cd vagrant-libvirt
-bundle config --local with development
-bundle config --local path 'vendor/bundle'
-bundle install
+rake build
+
+vagrant-libvirt 0 built to pkg/vagrant-libvirt-0.gem.
+vagrant-libvirt 0 built to pkg/vagrant-libvirt-0.gem.
+
+
 ```
 
-Once you have the dependencies, verify the unit tests pass with `rspec`:
+Installing using the output showed in this case is pkg/vagrant-libvirt-0.gem:
 
 ```shell
-bundle exec rspec --fail-fast --color --format documentation
+VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT=1 vagrant plugin install pkg/vagrant-libvirt-0.gem
 ```
 
 If those pass, you're ready to start developing the plugin.
@@ -128,6 +83,7 @@ bundle update && bundle exec rspec --fail-fast --color --format documentation
 To run the acceptance tests which involve bringing up VMs and exercising
 various functionality aspects run the following (warning, may have issues if
 distro ruby is newer than supported by vagrant):
+
 ```shell
 bundle exec rspec --fail-fast --color --format documentation --tag acceptance
 ```
@@ -153,8 +109,10 @@ Vagrant.configure("2") do |config|
   config.vagrant.plugins = "vagrant-libvirt"
 end
 ```
+
 Or add the following to the top of the file to ensure that any required plugins
 are installed globally:
+
 ```ruby
 REQUIRED_PLUGINS = %w(vagrant-libvirt)
 exit unless REQUIRED_PLUGINS.all? do |plugin|
@@ -175,6 +133,7 @@ bundle exec vagrant up --provider=libvirt
 **IMPORTANT NOTE:** bundle is crucial. You need to use bundled Vagrant.
 
 ## Contributing
+
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/vagrant-libvirt/vagrant-libvirt/issues)
 
 1. Fork it
